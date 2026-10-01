@@ -216,7 +216,7 @@ jobs:
 
           docker manifest push $REGISTRY/$REPOSITORY:$BRANCH_TAG
         env:
-          REGISTRY: ghcr.io/aptabase
+          REGISTRY: ghcr.io/${{ github.repository_owner }}
           REPOSITORY: aptabase
           BRANCH_TAG: ${{ github.ref_name }}
           IMAGE_TAG: ${{ github.ref_name }}-${{ github.run_number }}
