@@ -208,10 +208,18 @@ jobs:
             --amend $REGISTRY/$REPOSITORY:$IMAGE_TAG-arm64
 
           docker manifest push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+          docker manifest create \
+            $REGISTRY/$REPOSITORY:$BRANCH_TAG \
+            --amend $REGISTRY/$REPOSITORY:$IMAGE_TAG-amd64 \
+            --amend $REGISTRY/$REPOSITORY:$IMAGE_TAG-arm64
+
+          docker manifest push $REGISTRY/$REPOSITORY:$BRANCH_TAG
         env:
           REGISTRY: ghcr.io/aptabase
           REPOSITORY: aptabase
-          IMAGE_TAG: main
+          BRANCH_TAG: ${{ github.ref_name }}
+          IMAGE_TAG: ${{ github.ref_name }}-${{ github.run_number }}
 
   # Keeps the dev Tinybird workspace in sync with main. Acts as a live rehearsal before the production gates.
   # All Tinybird deploy jobs run only when the push changed etc/tinybird.

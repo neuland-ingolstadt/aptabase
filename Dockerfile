@@ -13,22 +13,11 @@ COPY ./src /work/src
 
 RUN dotnet publish "Aptabase.csproj" -a $TARGETARCH -c Release -o /work/publish /p:UseAppHost=false
 
-# WebApp Build
-FROM node:22 AS webapp
-WORKDIR /work
-
-COPY ./src/package.json ./src/package-lock.json ./
-RUN npm install
-
-COPY ./src ./
-RUN npm run build
-
-# Final
+# Final (backend only — no web UI)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
 COPY --from=server /work/publish .
-COPY --from=webapp /work/wwwroot ./wwwroot
 COPY LICENSE .
 
 ENTRYPOINT ["dotnet", "Aptabase.dll"]
