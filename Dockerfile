@@ -14,7 +14,7 @@ COPY ./src /work/src
 RUN dotnet publish "Aptabase.csproj" -a $TARGETARCH -c Release -o /work/publish /p:UseAppHost=false
 
 # Final (backend only — no web UI)
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-chiseled AS final
 WORKDIR /app
 
 COPY --from=server /work/publish .
