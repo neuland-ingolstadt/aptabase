@@ -224,7 +224,8 @@ jobs:
   # Keeps the dev Tinybird workspace in sync with main. Acts as a live rehearsal before the production gates.
   # All Tinybird deploy jobs run only when the push changed etc/tinybird.
   deploy-tinybird-dev:
-    if: ${{ github.ref == 'refs/heads/main' && needs.tinybird-check.outputs.changed == 'true' }}
+    # Disabled on this fork — keep build/publish only.
+    if: false
     name: Deploy Tinybird (dev)
     runs-on: ubuntu-latest
     needs: [test, tinybird-check, tinybird-build]
@@ -250,7 +251,8 @@ jobs:
   # ECR push, so the schema must be live before the new backend image starts. When etc/tinybird
   # did not change, these jobs are skipped and the backend deploys proceed without them.
   deploy-tinybird-us:
-    if: ${{ github.ref == 'refs/heads/main' && needs.tinybird-check.outputs.changed == 'true' }}
+    # Disabled on this fork — keep build/publish only.
+    if: false
     name: Deploy Tinybird (US)
     runs-on: ubuntu-latest
     environment: "Tinybird US"
@@ -273,7 +275,8 @@ jobs:
         working-directory: etc/tinybird
 
   deploy-tinybird-eu:
-    if: ${{ github.ref == 'refs/heads/main' && needs.tinybird-check.outputs.changed == 'true' }}
+    # Disabled on this fork — keep build/publish only.
+    if: false
     name: Deploy Tinybird (EU)
     runs-on: ubuntu-latest
     environment: "Tinybird EU"
@@ -298,11 +301,8 @@ jobs:
   # Runs after the Tinybird deploy succeeded, or when it was skipped because etc/tinybird did not change.
   # A failed or rejected Tinybird deploy blocks the backend deploy.
   deploy-us:
-    if: >-
-      ${{ !cancelled()
-          && github.ref == 'refs/heads/main'
-          && needs.publish.result == 'success'
-          && (needs.deploy-tinybird-us.result == 'success' || needs.deploy-tinybird-us.result == 'skipped') }}
+    # Disabled on this fork — keep build/publish only.
+    if: false
     name: Deploy to Aptabase US
     runs-on: "ubuntu-latest"
     environment: "Aptabase US"
@@ -362,11 +362,8 @@ jobs:
           IMAGE_TAG: main
 
   deploy-eu:
-    if: >-
-      ${{ !cancelled()
-          && github.ref == 'refs/heads/main'
-          && needs.publish.result == 'success'
-          && (needs.deploy-tinybird-eu.result == 'success' || needs.deploy-tinybird-eu.result == 'skipped') }}
+    # Disabled on this fork — keep build/publish only.
+    if: false
     name: Deploy to Aptabase EU
     runs-on: "ubuntu-latest"
     environment: "Aptabase EU"
